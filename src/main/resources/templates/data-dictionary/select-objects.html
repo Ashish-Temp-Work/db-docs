@@ -20,7 +20,7 @@
             <div class="card-body">
                 <div class="alert alert-info">
                     <strong>Connection:</strong> <span th:text="${connection.name}">Connection Name</span>
-                    (<span th:text="${connection.databaseType.displayName}">Database Type</span>)
+                    (<span th:text="${connection.databaseType?.displayName}"> Database Type</span>)
                 </div>
 
                 <form id="dictionaryForm" th:action="@{/data-dictionary/generate/{id}(id=${connectionId})}" method="post">

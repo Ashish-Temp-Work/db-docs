@@ -46,7 +46,7 @@
                                     <br>
                                     <small th:text="${conn.description}" class="text-muted">Description</small>
                                 </td>
-                                <td th:text="${conn.databaseType.displayName}">MySQL</td>
+                                <td th:text="${conn.databaseType?.displayName}">MySQL</td>
                                 <td th:text="${conn.host} + ':' + ${conn.port}">localhost:3306</td>
                                 <td th:text="${conn.databaseName}">database</td>
                                 <td>

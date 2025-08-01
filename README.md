@@ -99,3 +99,5 @@ src/
 │       ├── templates/          # Thymeleaf templates
 │       └── application.yml     # Configuration
 ```
+
+

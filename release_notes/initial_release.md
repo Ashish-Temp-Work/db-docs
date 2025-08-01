@@ -1,1 +1,1 @@
-This is the first stble release.
+This is the first stable release.

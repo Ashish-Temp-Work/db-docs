@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Edit Connection</title>
+</head>
+<body>
+<div layout:fragment="content"> <div class="menu-grid">
+    <div th:fragment="editConnectionContent">
+        <div class="back-btn">
+            <a href="/connections/edit" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Connections
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-edit"></i> Edit Database Connection
+            </div>
+            <div class="card-body">
+                <form id="connectionForm" th:action="@{/connections/update/{id}(id=${connection.id})}"
+                      th:object="${connection}" method="post">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Connection Name *</label>
+                            <input type="text" id="name" th:field="*{name}" class="form-control" required
+                                   placeholder="Enter a unique name for this connection">
+                        </div>
+                        <div class="form-group">
+                            <label for="databaseType">Database Type *</label>
+                            <select id="databaseType" th:field="*{databaseType}" class="form-control" required>
+                                <option value="">Select Database Type</option>
+                                <option th:each="type : ${databaseTypes}"
+                                        th:value="${type}"
+                                        th:text="${type.displayName}"
+                                        th:selected="${type == connection.databaseType}">Database Type</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" th:field="*{description}" class="form-control" rows="3"
+                                  placeholder="Optional description for this connection"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="host">Host *</label>
+                            <input type="text" id="host" th:field="*{host}" class="form-control" required
+                                   placeholder="localhost or IP address">
+                        </div>
+                        <div class="form-group">
+                            <label for="port">Port *</label>
+                            <input type="number" id="port" th:field="*{port}" class="form-control" required
+                                   placeholder="Database port number">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="databaseName">Database Name *</label>
+                            <input type="text" id="databaseName" th:field="*{databaseName}" class="form-control" required
+                                   placeholder="Name of the database">
+                        </div>
+                        <div class="form-group">
+                            <label for="schema">Schema</label>
+                            <input type="text" id="schema" th:field="*{schema}" class="form-control"
+                                   placeholder="Schema name (optional)">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="username">Username *</label>
+                            <input type="text" id="username" th:field="*{username}" class="form-control" required
+                                   placeholder="Database username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password *</label>
+                            <input type="password" id="password" th:field="*{password}" class="form-control" required
+                                   placeholder="Database password">
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" onclick="testConnection()">
+                            <i class="fas fa-plug"></i> Test Connection
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update Connection
+                        </button>
+                        <a href="/connections/edit" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

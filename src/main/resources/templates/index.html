@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}"> <head>
+    <title>Database Schema Analyzer - Home</title> <th:block layout:fragment="head-scripts">
+</th:block>
+</head>
+<body>
+<div layout:fragment="content"> <div class="menu-grid">
+    <a href="/connections/new" class="menu-item">
+        <div class="icon">
+            <i class="fas fa-plus-circle"></i>
+        </div>
+        <h3>Create New Connection</h3>
+        <p>Set up a new database connection with host, port, credentials, and other settings.</p>
+    </a>
+
+    <a href="/connections/edit" class="menu-item">
+        <div class="icon">
+            <i class="fas fa-edit"></i>
+        </div>
+        <h3>Edit Existing Connections</h3>
+        <p>Modify or manage your existing database connections.</p>
+    </a>
+
+    <a href="/data-dictionary" class="menu-item">
+        <div class="icon">
+            <i class="fas fa-book"></i>
+        </div>
+        <h3>Create Data Dictionary</h3>
+        <p>Generate comprehensive documentation for your database schema in Markdown or PDF format.</p>
+    </a>
+
+    <a href="/sql-scripts" class="menu-item">
+        <div class="icon">
+            <i class="fas fa-code"></i>
+        </div>
+        <h3>Create SQL Scripts</h3>
+        <p>Generate CREATE scripts for tables, indexes, constraints, and other database objects.</p>
+    </a>
+</div>
+</div>
+<th:block layout:fragment="footer-scripts">
+</th:block>
+</body>
+</html>

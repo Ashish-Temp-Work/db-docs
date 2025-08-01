@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Create Data Dictionary - Select Connection</title>
+</head>
+<body>
+<div layout:fragment="content"> <div class="menu-grid">
+    <div th:fragment="selectDictConnectionContent">
+        <div class="back-btn">
+            <a href="/" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-book"></i> Create Data Dictionary - Select Connection
+            </div>
+            <div class="card-body">
+                <div th:if="${error}" class="alert alert-danger" th:text="${error}">Error message</div>
+
+                <div th:if="${#lists.isEmpty(connections)}" class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No database connections found.
+                    <a href="/connections/new">Create a connection first</a>.
+                </div>
+
+                <div th:if="${!#lists.isEmpty(connections)}">
+                    <p>Select a database connection to analyze and generate data dictionary:</p>
+
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Connection Name</th>
+                                <th>Database Type</th>
+                                <th>Host</th>
+                                <th>Database</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="conn : ${connections}">
+                                <td>
+                                    <strong th:text="${conn.name}">Connection Name</strong>
+                                    <br>
+                                    <small th:text="${conn.description}" class="text-muted">Description</small>
+                                </td>
+                                <td th:text="${conn.databaseType.displayName}">MySQL</td>
+                                <td th:text="${conn.host} + ':' + ${conn.port}">localhost:3306</td>
+                                <td th:text="${conn.databaseName}">database</td>
+                                <td>
+                                    <a th:href="@{/data-dictionary/objects/{id}(id=${conn.id})}" class="btn btn-primary">
+                                        <i class="fas fa-arrow-right"></i> Select
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

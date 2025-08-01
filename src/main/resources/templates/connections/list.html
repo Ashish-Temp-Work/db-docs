@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Manage Connections</title>
+</head>
+<body>
+<div layout:fragment="content"> <div class="menu-grid">
+    <div th:fragment="manageConnectionsContent">
+        <div class="back-btn">
+            <a href="/" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-list"></i> Manage Database Connections
+            </div>
+            <div class="card-body">
+                <div th:if="${#lists.isEmpty(connections)}" class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No database connections found.
+                    <a href="/connections/new">Create your first connection</a>.
+                </div>
+
+                <div th:if="${!#lists.isEmpty(connections)}" class="table-container">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Database Type</th>
+                            <th>Host</th>
+                            <th>Database</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="conn : ${connections}">
+                            <td>
+                                <strong th:text="${conn.name}">Connection Name</strong>
+                                <br>
+                                <small th:text="${conn.description}" class="text-muted">Description</small>
+                            </td>
+                            <td th:text="${conn.databaseType.displayName}">MySQL</td>
+                            <td th:text="${conn.host} + ':' + ${conn.port}">localhost:3306</td>
+                            <td th:text="${conn.databaseName}">database</td>
+                            <td th:text="${#temporals.format(conn.createdAt, 'yyyy-MM-dd HH:mm')}">2023-01-01 12:00</td>
+                            <td>
+                                <a th:href="@{/connections/edit/{id}(id=${conn.id})}" class="btn btn-secondary btn-sm">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <button class="btn btn-danger btn-sm" th:onclick="'deleteConnection(' + ${conn.id} + ')'">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="btn-group">
+                    <a href="/connections/new" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add New Connection
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

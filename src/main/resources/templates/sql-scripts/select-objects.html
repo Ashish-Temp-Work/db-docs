@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Create SQL Scripts - Select Objects</title>
+</head>
+<body>
+<div layout:fragment="content"> <div class="menu-grid">
+    <div th:fragment="selectSqlObjectsContent">
+        <div class="back-btn">
+            <a href="/sql-scripts" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Connections
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-code"></i> Create SQL Scripts - Select Objects
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong>Connection:</strong> <span th:text="${connection.name}">Connection Name</span>
+                    (<span th:text="${connection.databaseType.displayName}">Database Type</span>)
+                </div>
+
+                <form id="scriptsForm" th:action="@{/sql-scripts/generate/{id}(id=${connectionId})}" method="post">
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="selectAll" style="margin-right: 0.5rem;">
+                            Select All Objects
+                        </label>
+                    </div>
+
+                    <div class="checkbox-list">
+                        <div th:each="obj : ${objects}" class="checkbox-item">
+                            <input type="checkbox" th:id="'obj_' + ${objStat.index}"
+                                   name="selectedObjects"
+                                   th:value="${obj.schema != null ? obj.schema + '.' + obj.name : obj.name}">
+                            <label th:for="'obj_' + ${objStat.index}">
+                                <strong th:text="${obj.name}">Object Name</strong>
+                                <span th:text="'(' + ${obj.type} + ')'" class="text-muted">Type</span>
+                                <span th:if="${obj.schema}" th:text="'[' + ${obj.schema} + ']'" class="text-muted">Schema</span>
+                                <br>
+                                <small th:if="${obj.comment}" th:text="${obj.comment}" class="text-muted">Comment</small>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-download"></i> Generate SQL Scripts (ZIP)
+                        </button>
+                        <a href="/sql-scripts" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

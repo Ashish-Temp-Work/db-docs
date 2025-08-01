@@ -1,5 +1,7 @@
 [![Build, Release, and Deploy Site](https://github.com/Ashish-Temp-Work/db-docs/actions/workflows/main-action.yml/badge.svg)](https://github.com/Ashish-Temp-Work/db-docs/actions/workflows/main-action.yml)
 
+[![Create Release](https://github.com/Ashish-Temp-Work/db-docs/actions/workflows/main.yml/badge.svg)](https://github.com/Ashish-Temp-Work/db-docs/actions/workflows/main.yml)
+
 
 # Database Schema Analyzer
 

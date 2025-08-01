@@ -13,7 +13,7 @@
     <groupId>com.dbanalyzer</groupId>
     <artifactId>database-schema-analyzer</artifactId>
     <version>1.0.0</version>
-    <name>Database Schema Analyzer</name>
+    <name>Database Documentation Application</name>
     <description>Database Schema Analysis and Documentation Tool</description>
 
     <url>https://github.com/Ashish-Temp-Work/db-docs</url>

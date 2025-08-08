@@ -1,28 +1,59 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize tooltips and other components
+    initializeThemePicker();
     initializeComponents();
 });
 
+// --- THEME PICKER LOGIC ---
+function initializeThemePicker() {
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (!themeToggleBtn) return;
+
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+    // Function to set the icon based on the current theme
+    const setIcon = (isDark) => {
+        if (isDark) {
+            themeToggleLightIcon.classList.remove('hidden');
+            themeToggleDarkIcon.classList.add('hidden');
+        } else {
+            themeToggleLightIcon.classList.add('hidden');
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+    };
+
+    // Set the initial icon state
+    setIcon(document.documentElement.classList.contains('dark'));
+
+    // Add click listener
+    themeToggleBtn.addEventListener('click', function() {
+        // Toggle the class on the <html> element
+        const isDark = document.documentElement.classList.toggle('dark');
+        setIcon(isDark);
+
+        // Save the preference to localStorage
+        if (isDark) {
+            localStorage.theme = 'dark';
+        } else {
+            localStorage.theme = 'light';
+        }
+    });
+}
+
+// --- APPLICATION COMPONENTS LOGIC ---
 function initializeComponents() {
-    // Initialize database type change handler
+    // Handle database type change to update the default port
     const dbTypeSelect = document.getElementById('databaseType');
     if (dbTypeSelect) {
         dbTypeSelect.addEventListener('change', function() {
             updateDefaultPort(this.value);
         });
+        if (dbTypeSelect.value) {
+            updateDefaultPort(dbTypeSelect.value);
+        }
     }
 
-    // Initialize form validation
-    const forms = document.querySelectorAll('form');
-    forms.forEach(form => {
-        form.addEventListener('submit', function(e) {
-            if (!validateForm(this)) {
-                e.preventDefault();
-            }
-        });
-    });
-
-    // Initialize select all checkbox
+    // Handle "Select All" checkbox functionality
     const selectAllCheckbox = document.getElementById('selectAll');
     if (selectAllCheckbox) {
         selectAllCheckbox.addEventListener('change', function() {
@@ -35,7 +66,10 @@ function updateDefaultPort(databaseType) {
     if (!databaseType) return;
 
     fetch(`/connections/default-port/${databaseType}`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch port');
+            return response.json();
+        })
         .then(port => {
             const portInput = document.getElementById('port');
             if (portInput) {
@@ -44,128 +78,79 @@ function updateDefaultPort(databaseType) {
         })
         .catch(error => {
             console.error('Error fetching default port:', error);
+            showAlert('Could not fetch default port.', 'danger');
         });
 }
 
 function testConnection() {
     const form = document.getElementById('connectionForm');
     const formData = new FormData(form);
+    const connection = Object.fromEntries(formData.entries());
 
-    const connection = {
-        databaseType: formData.get('databaseType'),
-        host: formData.get('host'),
-        port: parseInt(formData.get('port')),
-        databaseName: formData.get('databaseName'),
-        schema: formData.get('schema'),
-        username: formData.get('username'),
-        password: formData.get('password')
-    };
-
-    // Show loading spinner
-    showLoadingSpinner('Testing connection...');
+    showAlert('Testing connection...', 'info');
 
     fetch('/connections/test', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(connection)
     })
     .then(response => response.json())
     .then(data => {
-        hideLoadingSpinner();
         if (data.success) {
             showAlert('Connection successful!', 'success');
         } else {
-            showAlert('Connection failed: ' + data.message, 'danger');
+            showAlert('Connection failed: ' + (data.message || 'Unknown error'), 'danger');
         }
     })
     .catch(error => {
-        hideLoadingSpinner();
         showAlert('Error testing connection: ' + error.message, 'danger');
     });
 }
 
-function validateForm(form) {
-    const requiredFields = form.querySelectorAll('[required]');
-    let isValid = true;
-
-    requiredFields.forEach(field => {
-        if (!field.value.trim()) {
-            field.style.borderColor = '#dc3545';
-            isValid = false;
-        } else {
-            field.style.borderColor = '#e0e0e0';
-        }
-    });
-
-    return isValid;
-}
-
 function toggleAllCheckboxes(checked) {
-    const checkboxes = document.querySelectorAll('input[name="selectedObjects"]');
-    checkboxes.forEach(checkbox => {
+    document.querySelectorAll('input[name="selectedObjects"]').forEach(checkbox => {
         checkbox.checked = checked;
     });
 }
 
-function showAlert(message, type) {
-    // Remove existing alerts
-    const existingAlerts = document.querySelectorAll('.alert');
-    existingAlerts.forEach(alert => alert.remove());
+function showAlert(message, type = 'info') {
+    const container = document.getElementById('alert-container');
+    if (!container) return;
 
-    // Create new alert
+    const colors = {
+        success: 'bg-green-100 border-green-400 text-green-700 dark:bg-green-900/50 dark:border-green-600 dark:text-green-300',
+        danger: 'bg-red-100 border-red-400 text-red-700 dark:bg-red-900/50 dark:border-red-600 dark:text-red-300',
+        info: 'bg-blue-100 border-blue-400 text-blue-700 dark:bg-blue-900/50 dark:border-blue-600 dark:text-blue-300',
+    };
+
     const alert = document.createElement('div');
-    alert.className = `alert alert-${type}`;
-    alert.textContent = message;
+    alert.className = `border px-4 py-3 rounded-md shadow-lg relative mb-4 transition-transform duration-300 ease-out translate-x-full`;
+    alert.innerHTML = `<span>${message}</span>`;
 
-    // Insert at the top of the main content
-    const container = document.querySelector('.container');
-    if (container) {
-        container.insertBefore(alert, container.firstChild);
-    }
+    container.appendChild(alert);
 
-    // Auto remove after 5 seconds
+    // Animate in
+    setTimeout(() => alert.classList.remove('translate-x-full'), 10);
+
+    // Animate out and remove after 5 seconds
     setTimeout(() => {
-        alert.remove();
+        alert.classList.add('translate-x-full');
+        alert.addEventListener('transitionend', () => alert.remove());
     }, 5000);
 }
 
-function showLoadingSpinner(message) {
-    const spinner = document.createElement('div');
-    spinner.id = 'loadingSpinner';
-    spinner.innerHTML = `
-        <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;">
-            <div style="background: white; padding: 2rem; border-radius: 8px; text-align: center;">
-                <div class="spinner"></div>
-                <p>${message}</p>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(spinner);
-}
-
-function hideLoadingSpinner() {
-    const spinner = document.getElementById('loadingSpinner');
-    if (spinner) {
-        spinner.remove();
-    }
-}
-
 function deleteConnection(id) {
-    if (confirm('Are you sure you want to delete this connection?')) {
-        fetch(`/connections/${id}`, {
-            method: 'DELETE'
-        })
-        .then(response => {
-            if (response.ok) {
-                location.reload();
-            } else {
-                showAlert('Error deleting connection', 'danger');
-            }
-        })
-        .catch(error => {
-            showAlert('Error deleting connection: ' + error.message, 'danger');
-        });
+    if (confirm('Are you sure you want to delete this connection? This action cannot be undone.')) {
+        fetch(`/connections/${id}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    showAlert('Error deleting connection.', 'danger');
+                }
+            })
+            .catch(error => {
+                showAlert('Error: ' + error.message, 'danger');
+            });
     }
 }

@@ -41,7 +41,7 @@ public class DataDictionaryController {
     @GetMapping("/objects/{connectionId}")
     public String selectObjects(@PathVariable Long connectionId, Model model) {
         try {
-            logger.info("\n\n\n\t\tThis should print : selectObjects\n\n\n");
+            //logger.info("\n\n\n\t\tThis should print : selectObjects\n\n\n");
             DatabaseConnection connection = connectionService.findById(connectionId);
             List<DatabaseObject> objects = metadataService.getDatabaseObjects(connectionId);
             model.addAttribute("connection", connection);
@@ -62,7 +62,7 @@ public class DataDictionaryController {
             @RequestParam("selectedObjects") List<String> selectedObjects) {
 
         try {
-            logger.info("\n\n\n\t\tThis should print : generateDictionary\n\n\n");
+            //logger.info("\n\n\n\t\tThis should print : generateDictionary\n\n\n");
             if ("markdown".equals(format)) {
                 String markdown = dataDictionaryService.generateMarkdownDictionary(connectionId, selectedObjects);
 

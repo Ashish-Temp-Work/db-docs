@@ -1,71 +1,44 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
-    <title>Manage Connections</title>
+    <title>Connections</title>
 </head>
 <body>
-<div layout:fragment="content"> <div class="menu-grid">
-    <div th:fragment="manageConnectionsContent">
-        <div class="back-btn">
-            <a href="/" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Back to Home
-            </a>
-        </div>
+<div layout:fragment="content">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-dark-text-heading">Database Connections</h1>
+        <a th:href="@{/connections/new}" class="btn btn-primary">New Connection</a>
+    </div>
 
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-list"></i> Manage Database Connections
-            </div>
-            <div class="card-body">
-                <div th:if="${#lists.isEmpty(connections)}" class="alert alert-info">
-                    <i class="fas fa-info-circle"></i> No database connections found.
-                    <a href="/connections/new">Create your first connection</a>.
-                </div>
-
-                <div th:if="${!#lists.isEmpty(connections)}" class="table-container">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Database Type</th>
-                            <th>Host</th>
-                            <th>Database</th>
-                            <th>Created</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="conn : ${connections}">
-                            <td>
-                                <strong th:text="${conn.name}">Connection Name</strong>
-                                <br>
-                                <small th:text="${conn.description}" class="text-muted">Description</small>
-                            </td>
-                            <td th:text="${conn.databaseType.displayName}">MySQL</td>
-                            <td th:text="${conn.host} + ':' + ${conn.port}">localhost:3306</td>
-                            <td th:text="${conn.databaseName}">database</td>
-                            <td th:text="${#temporals.format(conn.createdAt, 'yyyy-MM-dd HH:mm')}">2023-01-01 12:00</td>
-                            <td>
-                                <a th:href="@{/connections/edit/{id}(id=${conn.id})}" class="btn btn-secondary btn-sm">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>
-                                <button class="btn btn-danger btn-sm" th:onclick="'deleteConnection(' + ${conn.id} + ')'">
-                                    <i class="fas fa-trash"></i> Delete
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="btn-group">
-                    <a href="/connections/new" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Add New Connection
-                    </a>
-                </div>
-            </div>
-        </div>
+    <div class="bg-white dark:bg-dark-surface shadow-md rounded-lg overflow-x-auto border border-gray-200 dark:border-dark-border">
+        <table class="min-w-full leading-normal">
+            <thead>
+            <tr class="border-b-2 border-gray-200 dark:border-dark-border bg-gray-100 dark:bg-gray-800">
+                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Name</th>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Type</th>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Host</th>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Database</th>
+                <th class="px-5 py-3"></th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-dark-border">
+            <tr th:each="connection : ${connections}" class="hover:bg-gray-50 dark:hover:bg-gray-800">
+                <td class="px-5 py-4 text-sm text-gray-900 dark:text-dark-text" th:text="${connection.name}">Test Connection</td>
+                <td class="px-5 py-4 text-sm text-gray-900 dark:text-dark-text" th:text="${connection.databaseType.displayName}">PostgreSQL</td>
+                <td class="px-5 py-4 text-sm text-gray-900 dark:text-dark-text" th:text="${connection.host}">localhost</td>
+                <td class="px-5 py-4 text-sm text-gray-900 dark:text-dark-text" th:text="${connection.databaseName}">testdb</td>
+                <td class="px-5 py-4 text-sm text-right whitespace-nowrap">
+                    <a th:href="@{/connections/edit/{id}(id=${connection.id})}" class="font-medium text-primary-600 hover:text-primary-800 dark:hover:text-primary-400 mr-4">Edit</a>
+                    <button th:attr="onclick=|deleteConnection('${connection.id}')|" class="font-medium text-red-600 hover:text-red-800 dark:hover:text-red-400">Delete</button>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(connections)}">
+                <td colspan="5" class="text-center py-10 text-gray-500 dark:text-gray-400">No connections found. Create one to get started.</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>

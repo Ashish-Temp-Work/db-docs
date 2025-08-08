@@ -7,24 +7,24 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="bg-white p-8 rounded-lg shadow-md border">
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Select Database Objects</h1>
-        <p class="text-gray-600 mb-6">For connection: <strong class="text-primary-600" th:text="${connection.name}"></strong></p>
+    <div class="bg-white dark:bg-dark-surface p-8 rounded-lg shadow-md border dark:border-dark-border">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-dark-text-heading mb-2">Select Database Objects</h1>
+        <p class="text-gray-600 dark:text-dark-text mb-6">For connection: <strong class="text-primary-600" th:text="${connection.name}"></strong></p>
 
         <form th:action="@{/data-dictionary/generate/{connectionId}(connectionId=${connectionId})}" method="post">
-            <div class="border rounded-lg p-4">
-                <div class="flex items-center border-b pb-3 mb-3">
-                    <input id="selectAll" type="checkbox" class="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
-                    <label for="selectAll" class="ml-3 block text-sm font-medium text-gray-900">Select All / Deselect All</label>
+            <div class="border dark:border-dark-border rounded-lg p-4">
+                <div class="flex items-center border-b dark:border-dark-border pb-3 mb-3">
+                    <input id="selectAll" type="checkbox" class="h-4 w-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="selectAll" class="ml-3 block text-sm font-medium text-gray-900 dark:text-dark-text">Select All / Deselect All</label>
                 </div>
-                <div class="max-h-96 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="max-h-96 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-1">
                     <div th:each="object : ${objects}" class="flex items-start">
                         <div class="flex items-center h-5">
-                            <input type="checkbox" name="selectedObjects" th:value="${object.schema != null ? object.schema + '.' + object.name : object.name}" class="h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                            <input type="checkbox" name="selectedObjects" th:value="${object.schema != null ? object.schema + '.' + object.name : object.name}" class="h-4 w-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         </div>
                         <div class="ml-3 text-sm">
-                            <label th:for="${'object-' + object.name}" class="font-medium text-gray-700" th:text="${object.name}"></label>
-                            <p class="text-gray-500" th:text="${object.type}"></p>
+                            <label class="font-medium text-gray-700 dark:text-dark-text" th:text="${object.name}"></label>
+                            <p class="text-gray-500 dark:text-gray-400" th:text="${object.type}"></p>
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
 
             <div class="flex items-end space-x-6 mt-6">
                 <div>
-                    <label for="format" class="block text-gray-700 text-sm font-bold mb-2">Output Format</label>
+                    <label for="format" class="label-text">Output Format</label>
                     <select id="format" name="format" class="input-field">
                         <option value="markdown">Markdown</option>
                         <option value="pdf">PDF</option>

@@ -7,11 +7,11 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md border">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Generate Data Dictionary</h1>
+    <div class="max-w-2xl mx-auto bg-white dark:bg-dark-surface p-8 rounded-lg shadow-md border dark:border-dark-border">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-dark-text-heading mb-6">Generate Data Dictionary</h1>
         <form id="selectConnectionForm" method="get">
             <div class="mb-4">
-                <label for="connectionId" class="block text-gray-700 text-sm font-bold mb-2">Select a Connection</label>
+                <label for="connectionId" class="label-text">Select a Connection</label>
                 <select id="connectionId" name="connectionId" class="input-field">
                     <option value="" disabled selected>-- Choose a connection --</option>
                     <option th:each="connection : ${connections}" th:value="${connection.id}" th:text="${connection.name}"></option>

@@ -1,7 +1,46 @@
 document.addEventListener('DOMContentLoaded', function() {
+    initializeThemePicker();
     initializeComponents();
 });
 
+// --- THEME PICKER LOGIC ---
+function initializeThemePicker() {
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (!themeToggleBtn) return;
+
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+    // Function to set the icon based on the current theme
+    const setIcon = (isDark) => {
+        if (isDark) {
+            themeToggleLightIcon.classList.remove('hidden');
+            themeToggleDarkIcon.classList.add('hidden');
+        } else {
+            themeToggleLightIcon.classList.add('hidden');
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+    };
+
+    // Set the initial icon state
+    setIcon(document.documentElement.classList.contains('dark'));
+
+    // Add click listener
+    themeToggleBtn.addEventListener('click', function() {
+        // Toggle the class on the <html> element
+        const isDark = document.documentElement.classList.toggle('dark');
+        setIcon(isDark);
+
+        // Save the preference to localStorage
+        if (isDark) {
+            localStorage.theme = 'dark';
+        } else {
+            localStorage.theme = 'light';
+        }
+    });
+}
+
+// --- APPLICATION COMPONENTS LOGIC ---
 function initializeComponents() {
     // Handle database type change to update the default port
     const dbTypeSelect = document.getElementById('databaseType');
@@ -9,7 +48,6 @@ function initializeComponents() {
         dbTypeSelect.addEventListener('change', function() {
             updateDefaultPort(this.value);
         });
-        // Set initial port on page load if a type is already selected
         if (dbTypeSelect.value) {
             updateDefaultPort(dbTypeSelect.value);
         }
@@ -79,23 +117,26 @@ function showAlert(message, type = 'info') {
     const container = document.getElementById('alert-container');
     if (!container) return;
 
-    // Clear existing alerts
-    container.innerHTML = '';
-
     const colors = {
-        success: 'bg-green-100 border-green-400 text-green-700',
-        danger: 'bg-red-100 border-red-400 text-red-700',
-        info: 'bg-blue-100 border-blue-400 text-blue-700',
+        success: 'bg-green-100 border-green-400 text-green-700 dark:bg-green-900/50 dark:border-green-600 dark:text-green-300',
+        danger: 'bg-red-100 border-red-400 text-red-700 dark:bg-red-900/50 dark:border-red-600 dark:text-red-300',
+        info: 'bg-blue-100 border-blue-400 text-blue-700 dark:bg-blue-900/50 dark:border-blue-600 dark:text-blue-300',
     };
 
     const alert = document.createElement('div');
-    alert.className = `border px-4 py-3 rounded-md shadow-lg relative mb-4 ${colors[type]}`;
+    alert.className = `border px-4 py-3 rounded-md shadow-lg relative mb-4 transition-transform duration-300 ease-out translate-x-full`;
     alert.innerHTML = `<span>${message}</span>`;
 
     container.appendChild(alert);
 
-    // Automatically remove the alert after 5 seconds
-    setTimeout(() => alert.remove(), 5000);
+    // Animate in
+    setTimeout(() => alert.classList.remove('translate-x-full'), 10);
+
+    // Animate out and remove after 5 seconds
+    setTimeout(() => {
+        alert.classList.add('translate-x-full');
+        alert.addEventListener('transitionend', () => alert.remove());
+    }, 5000);
 }
 
 function deleteConnection(id) {

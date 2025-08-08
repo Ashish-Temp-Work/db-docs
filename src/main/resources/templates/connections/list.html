@@ -19,6 +19,7 @@
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Name</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Type</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Host</th>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Description</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Database</th>
                 <th class="px-5 py-3"></th>
             </tr>
@@ -28,6 +29,7 @@
                 <td class="px-5 py-4 text-sm text-gray-900 dark:text-dark-text" th:text="${connection.name}">Test Connection</td>
                 <td class="px-5 py-4 text-sm text-gray-900 dark:text-dark-text" th:text="${connection.databaseType.displayName}">PostgreSQL</td>
                 <td class="px-5 py-4 text-sm text-gray-900 dark:text-dark-text" th:text="${connection.host}">localhost</td>
+                <td class="px-5 py-4 text-sm text-gray-900 dark:text-dark-text" th:text="${connection.description}">localhost</td>
                 <td class="px-5 py-4 text-sm text-gray-900 dark:text-dark-text" th:text="${connection.databaseName}">testdb</td>
                 <td class="px-5 py-4 text-sm text-right whitespace-nowrap">
                     <a th:href="@{/connections/edit/{id}(id=${connection.id})}" class="font-medium text-primary-600 hover:text-primary-800 dark:hover:text-primary-400 mr-4">Edit</a>

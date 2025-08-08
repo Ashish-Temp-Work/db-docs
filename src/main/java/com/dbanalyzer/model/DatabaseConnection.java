@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "database_connections")
 public class DatabaseConnection {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,6 +14,8 @@ public class DatabaseConnection {
     @Column(nullable = false, unique = true)
     private String name;
 
+    // Added for rich text support
+    @Lob
     private String description;
 
     @Enumerated(EnumType.STRING)

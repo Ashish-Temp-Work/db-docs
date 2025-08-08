@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<!-- Fragment for connection form fields -->
+<div th:fragment="connectionFormFields" class="w-full">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Name -->
+        <div class="mb-4">
+            <label for="name" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Connection Name</label>
+            <input type="text" id="name" th:field="*{name}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-gray-100"
+                   required>
+        </div>
+        <!-- Database Type -->
+        <div class="mb-4">
+            <label for="databaseType" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Database Type</label>
+            <select id="databaseType" th:field="*{databaseType}"
+                    class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-gray-100"
+                    required>
+                <option value="" disabled>Select a database type</option>
+                <option th:each="type : ${databaseTypes}" th:value="${type}" th:text="${type.displayName}"></option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Rich Text Description -->
+    <div class="mb-4">
+        <label for="description-editor" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Description</label>
+        <textarea id="description-editor" th:field="*{description}" rows="5"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder="Enter a description for this connection"></textarea>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Host -->
+        <div class="mb-4">
+            <label for="host" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Host</label>
+            <input type="text" id="host" th:field="*{host}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-gray-100"
+                   required>
+        </div>
+        <!-- Port -->
+        <div class="mb-4">
+            <label for="port" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Port</label>
+            <input type="number" id="port" th:field="*{port}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-gray-100"
+                   required>
+        </div>
+        <!-- Database Name -->
+        <div class="mb-4">
+            <label for="databaseName" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Database Name</label>
+            <input type="text" id="databaseName" th:field="*{databaseName}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-gray-100"
+                   required>
+        </div>
+        <!-- Schema (optional) -->
+        <div class="mb-4">
+            <label for="schema" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Schema (Optional)</label>
+            <input type="text" id="schema" th:field="*{schema}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-gray-100">
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Username -->
+        <div class="mb-4">
+            <label for="username" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Username</label>
+            <input type="text" id="username" th:field="*{username}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-gray-100"
+                   required>
+        </div>
+        <!-- Password -->
+        <div class="mb-4">
+            <label for="password" class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Password</label>
+            <input type="password" id="password" th:field="*{password}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-gray-100"
+                   required>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

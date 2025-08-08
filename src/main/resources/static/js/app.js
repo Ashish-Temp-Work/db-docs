@@ -124,7 +124,7 @@ function showAlert(message, type = 'info') {
     };
 
     const alert = document.createElement('div');
-    alert.className = `border px-4 py-3 rounded-md shadow-lg relative mb-4 transition-transform duration-300 ease-out translate-x-full`;
+    alert.className = `border px-4 py-3 rounded-md shadow-lg relative mb-4 transition-transform duration-300 ease-out translate-x-full ${colors[type]}`;
     alert.innerHTML = `<span>${message}</span>`;
 
     container.appendChild(alert);
@@ -139,8 +139,9 @@ function showAlert(message, type = 'info') {
     }, 5000);
 }
 
+// Replaced the confirm() function with a custom modal
 function deleteConnection(id) {
-    if (confirm('Are you sure you want to delete this connection? This action cannot be undone.')) {
+    showConfirmModal('Are you sure you want to delete this connection? This action cannot be undone.', () => {
         fetch(`/connections/${id}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
@@ -152,5 +153,44 @@ function deleteConnection(id) {
             .catch(error => {
                 showAlert('Error: ' + error.message, 'danger');
             });
+    });
+}
+
+// Function to show a custom confirmation modal
+function showConfirmModal(message, onConfirm) {
+    const modalContainer = document.getElementById('modal-container');
+    if (!modalContainer) {
+        console.error('Modal container not found!');
+        return;
     }
+
+    modalContainer.innerHTML = `
+        <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center" id="confirmModal">
+            <div class="bg-white rounded-lg shadow-xl p-6 m-4 max-w-sm w-full">
+                <div class="text-lg font-bold mb-4">Confirmation</div>
+                <div class="mb-6">${message}</div>
+                <div class="flex justify-end space-x-2">
+                    <button id="cancelButton" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none">
+                        Cancel
+                    </button>
+                    <button id="confirmButton" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const modal = document.getElementById('confirmModal');
+    const confirmButton = document.getElementById('confirmButton');
+    const cancelButton = document.getElementById('cancelButton');
+
+    confirmButton.addEventListener('click', () => {
+        onConfirm();
+        modal.remove();
+    });
+
+    cancelButton.addEventListener('click', () => {
+        modal.remove();
+    });
 }

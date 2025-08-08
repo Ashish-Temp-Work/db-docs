@@ -31,9 +31,4 @@
         <appender-ref ref="FILE"/>
     </logger>
 
-    <logger name="org.springframework" level="ERROR" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="FILE"/>
-    </logger>
-
 </configuration>

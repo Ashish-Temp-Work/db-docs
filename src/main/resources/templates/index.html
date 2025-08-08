@@ -1,45 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}"> <head>
-    <title>Database Schema Analyzer - Home</title> <th:block layout:fragment="head-scripts">
-</th:block>
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Home</title>
 </head>
 <body>
-<div layout:fragment="content"> <div class="menu-grid">
-    <a href="/connections/new" class="menu-item">
-        <div class="icon">
-            <i class="fas fa-plus-circle"></i>
-        </div>
-        <h3>Create New Connection</h3>
-        <p>Set up a new database connection with host, port, credentials, and other settings.</p>
-    </a>
+<div layout:fragment="content">
+    <div class="text-center py-12">
+        <h1 class="text-5xl font-extrabold text-gray-800 mb-4">Database Schema Analyzer</h1>
+        <p class="text-xl text-gray-600 mb-10">Analyze schemas, generate data dictionaries, and create SQL scripts with ease.</p>
+    </div>
 
-    <a href="/connections/edit" class="menu-item">
-        <div class="icon">
-            <i class="fas fa-edit"></i>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow border border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Manage Connections</h2>
+            <p class="text-gray-600 mb-6">Create, edit, and test your database connections securely.</p>
+            <a th:href="@{/connections/new}" class="btn btn-primary">Create Connection</a>
         </div>
-        <h3>Edit Existing Connections</h3>
-        <p>Modify or manage your existing database connections.</p>
-    </a>
 
-    <a href="/data-dictionary" class="menu-item">
-        <div class="icon">
-            <i class="fas fa-book"></i>
+        <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow border border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Data Dictionary</h2>
+            <p class="text-gray-600 mb-6">Generate detailed data dictionaries in Markdown or PDF format.</p>
+            <a th:href="@{/data-dictionary}" class="btn btn-primary">Generate Dictionary</a>
         </div>
-        <h3>Create Data Dictionary</h3>
-        <p>Generate comprehensive documentation for your database schema in Markdown or PDF format.</p>
-    </a>
 
-    <a href="/sql-scripts" class="menu-item">
-        <div class="icon">
-            <i class="fas fa-code"></i>
+        <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow border border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">SQL Scripts</h2>
+            <p class="text-gray-600 mb-6">Generate CREATE TABLE scripts for your database objects.</p>
+            <a th:href="@{/sql-scripts}" class="btn btn-primary">Generate Scripts</a>
         </div>
-        <h3>Create SQL Scripts</h3>
-        <p>Generate CREATE scripts for tables, indexes, constraints, and other database objects.</p>
-    </a>
+    </div>
 </div>
-</div>
-<th:block layout:fragment="footer-scripts">
-</th:block>
 </body>
 </html>

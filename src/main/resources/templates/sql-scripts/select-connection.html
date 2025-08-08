@@ -1,66 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
-    <title>Create SQL Scripts - Select Connection</title>
+    <title>Select Connection</title>
 </head>
 <body>
-<div layout:fragment="content"> <div class="menu-grid">
-    <div th:fragment="selectSqlConnectionContent">
-        <div class="back-btn">
-            <a href="/" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Back to Home
-            </a>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-code"></i> Create SQL Scripts - Select Connection
+<div layout:fragment="content">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md border">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Generate SQL Scripts</h1>
+        <form id="selectConnectionForm" method="get">
+            <div class="mb-4">
+                <label for="connectionId" class="block text-gray-700 text-sm font-bold mb-2">Select a Connection</label>
+                <select id="connectionId" name="connectionId" class="input-field">
+                    <option value="" disabled selected>-- Choose a connection --</option>
+                    <option th:each="connection : ${connections}" th:value="${connection.id}" th:text="${connection.name}"></option>
+                </select>
             </div>
-            <div class="card-body">
-                <div th:if="${error}" class="alert alert-danger" th:text="${error}">Error message</div>
-
-                <div th:if="${#lists.isEmpty(connections)}" class="alert alert-info">
-                    <i class="fas fa-info-circle"></i> No database connections found.
-                    <a href="/connections/new">Create a connection first</a>.
-                </div>
-
-                <div th:if="${!#lists.isEmpty(connections)}">
-                    <p>Select a database connection to analyze and generate SQL scripts:</p>
-
-                    <div class="table-container">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Connection Name</th>
-                                <th>Database Type</th>
-                                <th>Host</th>
-                                <th>Database</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="conn : ${connections}">
-                                <td>
-                                    <strong th:text="${conn.name}">Connection Name</strong>
-                                    <br>
-                                    <small th:text="${conn.description}" class="text-muted">Description</small>
-                                </td>
-                                <td th:text="${conn.databaseType?.displayName}">MySQL</td>
-                                <td th:text="${conn.host} + ':' + ${conn.port}">localhost:3306</td>
-                                <td th:text="${conn.databaseName}">database</td>
-                                <td>
-                                    <a th:href="@{/sql-scripts/objects/{id}(id=${conn.id})}" class="btn btn-primary">
-                                        <i class="fas fa-arrow-right"></i> Select
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="flex items-center justify-end mt-6">
+                <button type="submit" class="btn btn-primary" onclick="this.form.action = '/sql-scripts/objects/' + document.getElementById('connectionId').value;">Next</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 </body>
